@@ -79,7 +79,7 @@
                     <Button builders={[builder]} variant="ghost" class="w-11 h-11 rounded-full">
                         <Avatar.Root class="h-9 w-9">
                             <Avatar.Image src={data.avatar} alt="Avatar" />
-                            <Avatar.Fallback>OM</Avatar.Fallback>
+                            <Avatar.Fallback>{data.user.name.split(" ")[0][0]}{data.user.name.split(" ")[1][0]}</Avatar.Fallback>
                         </Avatar.Root>
                     </Button>
                 </DropdownMenu.Trigger>
@@ -90,7 +90,7 @@
                         <a href="/">
                             <DropdownMenu.Item>Home Page</DropdownMenu.Item>
                         </a>
-                        <a href="/profile">
+                        <a href="/settings/profile">
                             <DropdownMenu.Item>Profile</DropdownMenu.Item>
                         </a>
                         <a href="/dashboard">
