@@ -1,10 +1,9 @@
 <script lang="ts">
     import * as Sheet from "$lib/components/ui/sheet/index.js";
-    import { Button } from "$lib/components/ui/button/index.js";
-    import { Input } from "$lib/components/ui/input/index.js";
-    import { Label } from "$lib/components/ui/label/index.js";
     import { loginHistoryMoreInfo } from "@/store";
-    import { mmddyyyy } from "@/utils";
+    import { mmToString, mmddyyyy } from "@/utils";
+    import { onDestroy } from "svelte";
+    import type { LoginRecord } from "@/addLogin";
 
     let actualDate: Date;
     let date: (string | number)[];
@@ -15,29 +14,38 @@
             date = mmddyyyy(actualDate)
         }
     }
+
+    let info: LoginRecord | null = null;
+    const loginHistoryMoreInfoUnsub = loginHistoryMoreInfo.subscribe((data) => info = data);
+
+    onDestroy(() => {
+        loginHistoryMoreInfoUnsub();
+    });
 </script>
    
-
-<Sheet.Root open={$loginHistoryMoreInfo !== null} onOpenChange={() => {loginHistoryMoreInfo.set(null)}}>
+<Sheet.Root open={info !== null} onOpenChange={() => {loginHistoryMoreInfo.set(null)}}>
     <Sheet.Content side="right">
         <Sheet.Header>
-            <Sheet.Title>{$loginHistoryMoreInfo?.service} @{actualDate.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'})}</Sheet.Title>
-            <Sheet.Description>Info about the login record.</Sheet.Description>
+            <Sheet.Title>{info?.service} @{actualDate.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'})}</Sheet.Title>
+            <Sheet.Description>More information about the login record.</Sheet.Description>
         </Sheet.Header>
-        <div class="grid gap-4 py-4">
-            <div class="grid grid-cols-4 items-center gap-4">
-            <Label for="name" class="text-right">Name</Label>
-            <Input id="name" value="Pedro Duarte" class="col-span-3" />
+        {#if info}
+            <div class="grid gap-4 py-4">
+                <h4 class="scroll-m-20 text-xl font-semibold tracking-tight">Device Info</h4>
+                <div class="w-full ml-4">
+                    <p><span class="font-bold">Form Factor</span>: {info.deviceInfo.form_factor}</p>
+                    <p><span class="font-bold">Device Name</span>: {info.deviceInfo.complete_device_name}</p>
+                    <p><span class="font-bold">Is Mobile</span>: {info.deviceInfo.is_mobile ? "Yes" : "No"}</p>
+                    <p><span class="font-bold">Ip Address</span>: {info.ip}</p>
+                    <p><span class="font-bold">User Agent</span>: {info.userAgent}</p>
+                </div>
+                <h4 class="scroll-m-20 text-xl font-semibold tracking-tight">More Info</h4>
+                <div class="w-full ml-4">
+                    <p><span class="font-bold">Service</span>: {info.service}</p>
+                    <p><span class="font-bold">Time</span>: {actualDate.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'})}</p>
+                    <p><span class="font-bold">Date</span>: {mmToString(date[0])} {date[1]}, {date[2]}</p>
+                </div>
             </div>
-            <div class="grid grid-cols-4 items-center gap-4">
-            <Label for="username" class="text-right">Username</Label>
-            <Input id="username" value="@peduarte" class="col-span-3" />
-            </div>
-        </div>
-        <Sheet.Footer>
-            <Sheet.Close asChild let:builder>
-                <Button builders={[builder]} type="submit">Save changes</Button>
-            </Sheet.Close>
-        </Sheet.Footer>
+        {/if}
     </Sheet.Content>
 </Sheet.Root>

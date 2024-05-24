@@ -37,12 +37,22 @@
 </script>
 
 <svelte:window on:scroll={scrolling} />
-<!-- bg-white dark:bg-black -->
+
 <header class="{cl} border-b flex justify-between items-center w-screen px-32 py-5 fixed top-0 left-0 z-20 bg-white dark:bg-background">
     <section class="flex item gap-2 items-center">
-        <h2 class="scroll-m-20 pb-2 text-3xl font-bold tracking-tight transition-colors first:mt-0">
-            GAuth
-        </h2>
+        {#if !data.user}
+            <a href="/">
+                <h2 class="scroll-m-20 pb-2 text-3xl font-bold tracking-tight transition-colors first:mt-0">
+                    GAuth
+                </h2>
+            </a>
+        {:else}
+            <a href="/dashboard">
+                <h2 class="scroll-m-20 pb-2 text-3xl font-bold tracking-tight transition-colors first:mt-0">
+                    GAuth
+                </h2>
+            </a>
+        {/if}
         <Badge class="h-5" variant="default">V2</Badge>
     </section>
     <section class="flex items-center gap-3">

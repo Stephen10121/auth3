@@ -16,17 +16,3 @@
     <Table.Cell>{loginRecord.deviceType}</Table.Cell>
     <Table.Cell class="text-right">{actualDate.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'})}</Table.Cell>
 </Table.Row>
-
-<!-- <div class="flex items-center">
-    <Avatar.Root class="h-9 w-9">
-        <Avatar.Image src={avatar} alt="Avatar" />
-        <Avatar.Fallback>OM</Avatar.Fallback>
-    </Avatar.Root>
-    <div class="ml-4 space-y-1">
-        <button on:click={() => {loginHistoryMoreInfo.set(loginRecord)}} class="text-sm font-medium leading-none underline cursor-pointer">{loginRecord.service}</button>
-        <p class="text-sm text-muted-foreground">
-            {mmToString(date[0])} {date[1]}, {date[2]}
-        </p>
-    </div>
-    <div class="ml-auto font-medium">{actualDate.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'})}</div>
-</div> -->
