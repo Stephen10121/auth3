@@ -41,8 +41,8 @@
 							<OpenDoor class="h-4 w-4 text-muted-foreground" />
 						</Card.Header>
 						<Card.Content>
-							<div class="text-2xl font-bold">{data.user.logins.length}</div>
-							<p class="text-xs text-muted-foreground">First login on {mmddyyyy(data.user.logins[data.user.logins.length-1].date).join('/')}.</p>
+							<div class="text-2xl font-bold">{data.user.logins ? data.user.logins.length : "0"}</div>
+							<p class="text-xs text-muted-foreground">First login on {data.user.logins ? mmddyyyy(data.user.logins[data.user.logins.length-1].date).join('/') : "unkown"}.</p>
 						</Card.Content>
 					</Card.Root>
 					<Card.Root>
@@ -89,7 +89,9 @@
 							<Card.Description>Where and when you logged in.</Card.Description>
 						</Card.Header>
 						<Card.Content>
-                            <LoginHistory loginsLog={data.user.logins} />
+							{#if data.user.logins}
+                            	<LoginHistory loginsLog={data.user.logins} />
+							{/if}
 						</Card.Content>
 					</Card.Root>
 				</div>

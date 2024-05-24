@@ -13,7 +13,7 @@
 <Table.Row on:click={() => {loginHistoryMoreInfo.set(loginRecord)}}>
     <Table.Cell class="font-medium">{loginRecord.service}</Table.Cell>
     <Table.Cell>{mmToString(date[0])} {date[1]}, {date[2]}</Table.Cell>
-    <Table.Cell>Computer</Table.Cell>
+    <Table.Cell>{loginRecord.deviceType}</Table.Cell>
     <Table.Cell class="text-right">{actualDate.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'})}</Table.Cell>
 </Table.Row>
 

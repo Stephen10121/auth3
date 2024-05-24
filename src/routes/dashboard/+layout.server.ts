@@ -1,9 +1,11 @@
 import { redirect } from '@sveltejs/kit';
 
-export function load({ locals }) {
+export async function load({ locals, parent }) {
     if (!locals.user) {
         throw redirect(303, "/");
     }
 
-    return { user: locals.user, avatar: locals.pb.files.getUrl(locals.user, locals.user.avatar)}
+    const data = await parent();
+
+    return {...data}
 }

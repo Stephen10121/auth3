@@ -1,6 +1,6 @@
 import type { ClientResponseError, RecordAuthResponse, RecordModel } from 'pocketbase';
 import type { Actions } from './$types';
-import { addLogin } from '@/addLogin';
+import { addLogin, type LoginRecord } from '@/addLogin';
 
 export const actions = {
     register: async ({ locals, request }): Promise<({error: false, success: boolean, message: string} | {error: true, message: string})> => {
@@ -47,8 +47,36 @@ export const actions = {
             return { error: true, message: error.response.data[errorList[0]].message }
         }
         
-        console.log(request.headers.get("user-agent"));
-        await addLogin(user.record, locals, getClientAddress(), "GAuth", "Computer");
+        let userAgent = request.headers.get("user-agent");
+        
+        let deviceInfo: LoginRecord["deviceInfo"];
+        try {
+            if (!body.wurfl) {
+                deviceInfo = {
+                    complete_device_name: "unknown",
+                    form_factor: "unknown",
+                    is_mobile: false
+                }
+            } else {
+                deviceInfo = JSON.parse(body.wurfl as string);
+            }
+        } catch(err) {
+            deviceInfo = {
+                complete_device_name: "unknown",
+                form_factor: "unknown",
+                is_mobile: false
+            }
+        }
+
+        await addLogin({
+            record: user.record, 
+            locals,
+            ip: getClientAddress(),
+            service: "GAuth",
+            deviceType: deviceInfo.complete_device_name,
+            userAgent: userAgent ? userAgent : "None Detected",
+            deviceInfo
+        });
 
         return { error: false, success: true, message: "Logged in user!" }
     }

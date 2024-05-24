@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@internationalized/date':
+    specifier: ^3.5.4
+    version: 3.5.4
   bits-ui:
     specifier: ^0.21.9
     version: 0.21.9(svelte@4.2.17)

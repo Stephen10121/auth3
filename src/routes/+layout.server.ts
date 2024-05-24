@@ -1,8 +1,7 @@
-export function load({ locals }) {
+export async function load({ locals }) {
     if (locals.user) {
-        return {
-            user: locals.user,
-            avatar: locals.pb.files.getUrl(locals.user, locals.user.avatar)
-        }
+        const user = await locals.pb.collection("users").getOne(locals.user.id);
+        
+        return { user, avatar: locals.pb.files.getUrl(user, user.avatar)}
     }
 }

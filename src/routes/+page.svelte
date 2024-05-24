@@ -11,6 +11,7 @@
     import { toast } from "svelte-sonner";
     import { enhance } from '$app/forms';
     import { goto } from "$app/navigation";
+    import { onMount } from "svelte";
 
     export let form;
 
@@ -27,7 +28,23 @@
             }
         }
     }
+
+    let wurfl = "";
+
+    onMount(() => {
+        setTimeout(() => {
+            //@ts-ignore
+            if (WURFL) {
+                //@ts-ignore
+                wurfl = JSON.stringify(WURFL) as string;
+            }
+        }, 50);
+    });
 </script>
+
+<svelte:head>
+    <script src="https://wurfl.io/wurfl.js"></script>
+</svelte:head>
 
 <Dialog.Root bind:open={$loginOrRegisterDiologOpen}>
     <Dialog.Content class="sm:max-w-[425px] pt-10">
@@ -47,6 +64,7 @@
                           update({ reset: false });
                         };
                       }}>
+                      <input type="hidden" name="wurfl" bind:value={wurfl}>
                         <Card.Content class="space-y-2">
                             <div class="space-y-1">
                                 <Label for="username">Username</Label>
