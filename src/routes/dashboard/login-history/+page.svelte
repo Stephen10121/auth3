@@ -55,7 +55,7 @@
     }
 </script>
 
-<div class="hidden flex-col md:flex px-28 mt-24 gap-3">
+<div class="hidden flex-col md:flex px-28 mt-24 gap-3 pb-5">
     <div class="flex items-center justify-between gap-4">
         <div class="flex items-center gap-4">
             <p class="leading-7 [&:not(:first-child)]:mt-6">Filters</p>

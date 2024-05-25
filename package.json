@@ -10,6 +10,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
 	"devDependencies": {
+		"@simplewebauthn/types": "^10.0.0",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
@@ -25,6 +26,7 @@
 	"type": "module",
 	"dependencies": {
 		"@internationalized/date": "^3.5.4",
+		"@simplewebauthn/server": "^10.0.0",
 		"bits-ui": "^0.21.9",
 		"clsx": "^2.1.1",
 		"lucide-svelte": "^0.379.0",

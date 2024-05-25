@@ -42,7 +42,7 @@
             };
           }}>
             <h3 class="text-2xl font-medium">Profile</h3>
-            <div class="flex flex-col mt-10 gap-10 w-full mx-auto">
+            <div class="flex flex-col mt-10 gap-10 px-5 w-full mx-auto">
                 <div class="w-fit mx-auto">
                     <label for="avatar" class="relative cursor-pointer w-72 h-72" title="Choose New Avatar">
                         <Avatar.Root class="w-72 h-72 border-2">
