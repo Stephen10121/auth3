@@ -79,7 +79,7 @@
                     <Button builders={[builder]} variant="ghost" class="w-11 h-11 rounded-full">
                         <Avatar.Root class="h-9 w-9">
                             <Avatar.Image src={data.avatar} alt="Avatar" />
-                            <Avatar.Fallback>{data.user.name.split(" ")[0][0]}{data.user.name.split(" ")[1][0]}</Avatar.Fallback>
+                            <Avatar.Fallback>{data.user.name[0]}</Avatar.Fallback>
                         </Avatar.Root>
                     </Button>
                 </DropdownMenu.Trigger>
@@ -90,14 +90,21 @@
                         <a href="/">
                             <DropdownMenu.Item>Home Page</DropdownMenu.Item>
                         </a>
-                        <a href="/settings/profile">
-                            <DropdownMenu.Item>Profile</DropdownMenu.Item>
-                        </a>
                         <a href="/dashboard">
                             <DropdownMenu.Item>Dashboard</DropdownMenu.Item>
                         </a>
-                        <a href="/settings">
-                            <DropdownMenu.Item>Settings</DropdownMenu.Item>
+                        <DropdownMenu.Separator />
+                        <a href="/settings/profile">
+                            <DropdownMenu.Item>Profile</DropdownMenu.Item>
+                        </a>
+                        <a href="/settings/account">
+                            <DropdownMenu.Item>Account</DropdownMenu.Item>
+                        </a>
+                        <a href="/settings/security">
+                            <DropdownMenu.Item>Security</DropdownMenu.Item>
+                        </a>
+                        <a href="/settings/developer">
+                            <DropdownMenu.Item>Developer</DropdownMenu.Item>
                         </a>
                     </DropdownMenu.Group>
                     <DropdownMenu.Separator />

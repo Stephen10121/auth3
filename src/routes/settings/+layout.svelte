@@ -1,30 +1,50 @@
 <script lang="ts">
-    import * as Tooltip from "$lib/components/ui/tooltip/index.js";
     import { Button } from "$lib/components/ui/button/index.js";
-
-//    "size-9",
-//                                 route.variant === "default" &&
-//                                     "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
+    import Cog from "lucide-svelte/icons/settings";
+    import Person from "lucide-svelte/icons/circle-user-round";
+    import Code from "lucide-svelte/icons/code-xml";
+    import ArrowBack from "lucide-svelte/icons/corner-up-left";
+    import Shield from "lucide-svelte/icons/shield-check";
+    import { page } from "$app/stores";
 </script>
 
-<main class="mt-20 flex gap-10">
-    <aside class="flex w-96">
-        <nav class="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2 w-full">
-        <Button
-					href="#"
-					variant="ghost"
-					size="sm"
-					class="justify-start"
-				>
-					<!-- <svelte:component this={route.icon} class="mr-2 size-4" aria-hidden="true" /> -->
-					routetitle
-				</Button>
-        </nav>
+<main class="mt-20 w-full grid p-3 pt-5 px-32">
+    <aside class="w-full h-full border-2 rounded-sm">
+        <div class="group flex flex-col gap-4 py-2">
+            <nav class="grid gap-1 px-2">
+                <Button href="/dashboard" variant="ghost" size="sm" class="justify-start">
+                    <ArrowBack class="mr-2 size-4" aria-hidden="true" />
+                    Back to Dashboard
+                </Button>
+                <Button href="/settings/profile" variant={$page.url.pathname === "/settings/profile" ? "secondary" : "ghost"} size="sm" class="justify-start">
+                    <Cog class="mr-2 size-4" aria-hidden="true" />
+                    Profile
+                </Button>
+                <Button href="/settings/account" variant={$page.url.pathname === "/settings/account" ? "secondary" : "ghost"} size="sm" class="justify-start">
+                    <Person class="mr-2 size-4" aria-hidden="true" />
+                    Account
+                </Button>
+                <Button href="/settings/security" variant={$page.url.pathname === "/settings/security" ? "secondary" : "ghost"} size="sm" class="justify-start">
+                    <Shield class="mr-2 size-4" aria-hidden="true" />
+                    Security
+                </Button>
+                <Button href="/settings/developer" variant={$page.url.pathname === "/settings/developer" ? "secondary" : "ghost"} size="sm" class="justify-start">
+                    <Code class="mr-2 size-4" aria-hidden="true" />
+                    Developer
+                </Button>
+            </nav>
+        </div>
     </aside>
-    <!-- <aside class="flex flex-col">
-        <a href="/settings">Settings</a>
-        <a href="/settings/profile">Profile</a>
-    </aside> -->
-    
-    <slot />
+    <section class="w-full h-full border-2 rounded-sm">
+        <slot />
+    </section>
 </main>
+
+<style>
+    main {
+        height: calc(100vh - 80px);
+        height: calc(100dvh - 80px);
+        grid-template-columns: 300px auto;
+        column-gap: 1rem;
+    }
+</style>

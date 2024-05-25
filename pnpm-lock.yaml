@@ -20,6 +20,9 @@ dependencies:
   mode-watcher:
     specifier: ^0.3.0
     version: 0.3.0(svelte@4.2.17)
+  paneforge:
+    specifier: ^0.0.4
+    version: 0.0.4(svelte@4.2.17)
   pocketbase:
     specifier: ^0.21.2
     version: 0.21.2
@@ -1237,6 +1240,15 @@ packages:
     dependencies:
       wrappy: 1.0.2
     dev: true
+
+  /paneforge@0.0.4(svelte@4.2.17):
+    resolution: {integrity: sha512-0JRqGHLCGU9MfoIv7lAtzUrCRfaHDkE63xQV5OC7MZ19lbXZntZsdZ3+tsWM8iDZfwmhYrQl1cCioUjorI+Apg==}
+    peerDependencies:
+      svelte: ^4.0.0
+    dependencies:
+      nanoid: 5.0.7
+      svelte: 4.2.17
+    dev: false
 
   /parent-module@1.0.1:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
