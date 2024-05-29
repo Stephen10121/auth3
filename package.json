@@ -26,6 +26,7 @@
 	"type": "module",
 	"dependencies": {
 		"@internationalized/date": "^3.5.4",
+		"@simplewebauthn/browser": "^10.0.0",
 		"@simplewebauthn/server": "^10.0.0",
 		"bits-ui": "^0.21.9",
 		"clsx": "^2.1.1",

@@ -1,4 +1,4 @@
-import { rpID, type Passkey } from '@/tfa/types';
+import { rpID, type Passkey, origin } from '@/tfa/types';
 import { verifyRegistrationResponse } from '@simplewebauthn/server';
 import { error, json } from '@sveltejs/kit';
 
@@ -59,9 +59,15 @@ export async function POST({ locals, request }) {
     
             // (Pseudocode) Save the authenticator info so that we can
             // get it by user ID later
-            const record = await locals.pb.collection('passkeys').create(newPasskey);
+            try {
+                const record = await locals.pb.collection('passkeys').create(newPasskey);
+                console.log(record);
+            } catch (err) {
+                console.log({err});
 
-            console.log(record);
+                return json({ verified: false });
+            }
+
         }
     }
 
