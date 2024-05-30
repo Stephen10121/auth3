@@ -72,47 +72,6 @@
         }
     }
 
-    async function startAuthenticationButton() {
-        // GET authentication options from the endpoint that calls
-        // @simplewebauthn/server -> generateAuthenticationOptions()
-        const resp = await fetch('/tfa/generateAuthenticationOptions');
-        const respJSON = await resp.json()
-        console.log(respJSON);
-
-        let asseResp;
-        try {
-            // Pass the options to the authenticator and wait for a response
-            asseResp = await startAuthentication(respJSON);
-        } catch (error) {
-            console.error(error);
-            // Some basic error handling
-            toast.error("2FA Error", { description: "Oh no, something went wrong! Check console." });
-            throw error;
-        }
-
-        // POST the response to the endpoint that calls
-        // @simplewebauthn/server -> verifyAuthenticationResponse()
-        const verificationResp = await fetch('/tfa/verifyAuthentication', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(asseResp),
-        });
-
-        // Wait for the results of verification
-        const verificationJSON = await verificationResp.json();
-
-        // Show UI appropriate for the `verified` status
-        if (verificationJSON && verificationJSON.verified) {
-            toast.success("2FA Success");
-            invalidateAll();
-        } else {
-            console.error(verificationJSON);
-            toast.error("2FA Error", { description: "Oh no, something went wrong! Check console." });
-        }
-    }
-
     async function tfaChange(enable: boolean) {
         const verificationResp = await fetch('/tfa/setTfa', {
             method: 'POST',
@@ -250,7 +209,6 @@
                     </Dialog.Footer>
                 </Dialog.Content>
             </Dialog.Root>
-            <Button on:click={startAuthenticationButton} class="mt-5" disabled={!tfaEnabled}>Test Key</Button>
         </div>
     </div>
 {/if}
