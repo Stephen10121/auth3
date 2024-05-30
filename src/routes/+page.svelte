@@ -74,6 +74,7 @@
                                 <Label for="password">Password</Label>
                                 <Input id="password" name="password" type="password" />
                             </div>
+                            <a href="/reset-password" class="underline mt-5 block">I forgot my password</a>
                         </Card.Content>
                         <Card.Footer>
                             <Button type="submit">Login</Button>
