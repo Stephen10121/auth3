@@ -19,29 +19,30 @@
     let value: DateValue | undefined = undefined;
     let clearFiltersButton = false;
     let deviceTypeFilterValue: string = "";
+    let mfaFilterValue = "";
 
     let logins = data.user.logins as LoginRecord[];
 
     $: {
         logins = data.user.logins.filter((loginRecord: LoginRecord) => {
-            if (!value) return true;
-            const tempDate = new Date(loginRecord.date);
-            return tempDate.getMonth() + 1 === value?.month && tempDate.getDate() === value.day && tempDate.getFullYear() === value.year;
-        });
-    }
-
-    $: {
-        logins = data.user.logins.filter((loginRecord: LoginRecord) => {
-            if (deviceTypeFilterValue.length > 0) {
-                return loginRecord.deviceType.toLowerCase().includes(deviceTypeFilterValue.toLowerCase());
-            } else {
-                return true;
+            let filters: number[] = [];
+            if (mfaFilterValue.length > 0) {
+                let passkeyUsed = loginRecord.passkeyUsed ? loginRecord.passkeyUsed : "None Used";
+                filters.push(passkeyUsed.toLowerCase().includes(mfaFilterValue.toLowerCase()) ? 1 : 0);
             }
+            if (deviceTypeFilterValue.length > 0) {
+                filters.push(loginRecord.deviceType.toLowerCase().includes(deviceTypeFilterValue.toLowerCase()) ? 1 : 0);
+            }
+            if (value) {
+                const tempDate = new Date(loginRecord.date);
+                filters.push((tempDate.getMonth() + 1 === value?.month && tempDate.getDate() === value.day && tempDate.getFullYear() === value.year) ? 1 : 0);
+            }
+            return filters.reduce((partialSum, a) => partialSum + a, 0) === filters.length;
         });
     }
 
     $: {
-        if (value || deviceTypeFilterValue.length > 0) {
+        if (value || deviceTypeFilterValue.length > 0 || mfaFilterValue.length > 0) {
             clearFiltersButton = true;
         } else {
             clearFiltersButton = false;
@@ -52,6 +53,7 @@
     function clearFilters() {
         value = undefined;
         deviceTypeFilterValue = "";
+        mfaFilterValue = "";
     }
 </script>
 
@@ -75,6 +77,7 @@
                 </Popover.Content>
             </Popover.Root>
             <Input placeholder="Device/Browser Filter" class="max-w-xs" autocomplete="false" bind:value={deviceTypeFilterValue} />
+            <Input placeholder="MFA Filter" class="max-w-xs" autocomplete="false" bind:value={mfaFilterValue} />
         </div>
         {#if clearFiltersButton}
             <Button on:click={clearFilters}>Clear Filters</Button>
