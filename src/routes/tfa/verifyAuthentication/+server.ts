@@ -31,18 +31,6 @@ export async function POST({ locals, request }) {
     }
 
     let verification;
-    console.log({
-        response: body,
-        expectedChallenge: currentOptions.challenge,
-        expectedOrigin: origin,
-        expectedRPID: rpID,
-        authenticator: {
-            credentialID: passkey.cred_id,
-            credentialPublicKey: credPublicKey,
-            counter: passkey.counter,
-            transports: passkey.transports,
-        }
-    });
     try {
         verification = await verifyAuthenticationResponse({
             response: body,
@@ -70,7 +58,7 @@ export async function POST({ locals, request }) {
         const { newCounter } = authenticationInfo;
 
         try {
-            await locals.pb.collection('passkeys').update(passkey.id, { ...passkey, counter: newCounter });
+            await locals.pb.collection('passkeys').update(passkey.id, { ...passkey, counter: newCounter, usage: passkey.usage+1 });
         } catch(err) {
             console.log("[server] Couldn't update passkey counter.");
             console.log(err);

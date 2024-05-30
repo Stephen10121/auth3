@@ -7,6 +7,8 @@ export async function POST({ locals, request }) {
 
     const body = await request.json();
 
+    if (!body.newKeyIcon || !body.newKeyName) throw error(401, "Missing Fields.");
+
     const user = await locals.pb.collection("users").getOne(locals.user.id);
     const currentOptions = user.current_registration_options;
 
@@ -56,7 +58,11 @@ export async function POST({ locals, request }) {
                 // Whether the passkey has been backed up in some way
                 backup_status: credentialBackedUp,
                 // `body` here is from Step 2
-                transports: body.response.transports
+                transports: body.response.transports,
+
+                name: body.newKeyName,
+
+                icon: body.newKeyIcon
             };
     
             // (Pseudocode) Save the authenticator info so that we can

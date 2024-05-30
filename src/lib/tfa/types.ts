@@ -39,6 +39,10 @@ export type Passkey = {
     // Ex: ['ble' | 'cable' | 'hybrid' | 'internal' | 'nfc' | 'smart-card' | 'usb']
     transports?: AuthenticatorTransportFuture[];
 
+    name: string;
+
+    icon: string
+
 };
 
 /**

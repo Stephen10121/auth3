@@ -82,3 +82,10 @@ export function mmToString(month: number | string) {
 	}
 	return ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][month - 1];
 }
+
+export type PublicPasskey = {
+	id: string,
+	name: string,
+	icon: string
+	usage: number
+}
