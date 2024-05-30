@@ -14,6 +14,7 @@
     import * as Card from "$lib/components/ui/card/index.js";
     import SecurityKeys from '@/components/mine/SecurityKeys.svelte';
     import { Switch } from "$lib/components/ui/switch/index.js";
+    import { enhance } from '$app/forms';
 
     export let data;
 
@@ -136,12 +137,53 @@
             tfaChange(tfaEnabled);
         }
     }
+
+    export let form;
+
+    $: {
+        if (form) {
+            if (form.error) {
+                toast.error("Error", { description: form.message});
+            } else if (form.success) {
+                toast.success("Success", {description: form.message});
+            }
+        }
+    }
 </script>
 
 {#if data.user}
     <div class="flex flex-col w-full h-full p-10">
         <h3 class="text-2xl font-medium">Security</h3>
         <div class="w-full h-full px-5">
+            <h4 class="scroll-m-20 text-xl font-semibold tracking-tight mt-7">Password</h4>
+            <p class="leading-6 text-sm mt-3">Our platform features a secure password update option for users.</p>
+            <Dialog.Root>
+                <Dialog.Trigger class="{buttonVariants({ variant: "outline" })} w-fit mt-5">Change Password</Dialog.Trigger>
+                <Dialog.Content class="sm:max-w-[425px]">
+                    <Dialog.Header>
+                        <Dialog.Title>Change Password</Dialog.Title>
+                        <Dialog.Description>Make changes to your password here. Click Update Password when you're done.</Dialog.Description>
+                    </Dialog.Header>
+                        <form action="?/updatePassword" method="POST" class="grid gap-4 py-4" use:enhance>
+                            <div class="space-y-1">
+                                <Label for="cpassword">Current Password</Label>
+                                <Input id="cpassword" name="cpassword" type="password" class="col-span-3" required />
+                            </div>
+                            <div class="space-y-1">
+                                <Label for="npassword">New Password</Label>
+                                <Input id="npassword" name="npassword" type="password" class="col-span-3" autocomplete="off" required />
+                            </div>
+                            <div class="space-y-1">
+                                <Label for="cnpassword">Confirm New Password</Label>
+                                <Input id="cnpassword" name="cnpassword" type="password" class="col-span-3" autocomplete="off" required />
+                            </div>
+                            <a href="/reset-password" class="underline">I forgot my password</a>
+                            <div class="w-full flex justify-end -mb-5 mt-5">
+                                <Button type="submit" class="w-fit">Update Password</Button>
+                            </div>
+                        </form>
+                    </Dialog.Content>
+            </Dialog.Root>
             <h4 class="scroll-m-20 text-xl font-semibold tracking-tight mt-7">2 Factor Authentication</h4>
             <div class="flex items-center space-x-2 mt-5">
                 <Switch bind:checked={tfaEnabled} id="tfa-enabled" />
