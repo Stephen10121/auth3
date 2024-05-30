@@ -24,13 +24,16 @@
             <Table.Head class="w-[100px]">Service</Table.Head>
             <Table.Head>Date</Table.Head>
             <Table.Head>Device/Browser</Table.Head>
+            {#if more}
+                <Table.Head>MFA</Table.Head>
+            {/if}
             <Table.Head class="text-right">Time</Table.Head>
           </Table.Row>
         </Table.Header>
         <Table.Body>
             {#each newLogins as log, i (log.date)}
                 {#if more || i < 5}
-                    <LoginHistoryItem loginRecord={log} />
+                    <LoginHistoryItem loginRecord={log} {more} />
                 {/if}
             {/each}
         </Table.Body>

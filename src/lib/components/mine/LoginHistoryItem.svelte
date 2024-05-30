@@ -5,6 +5,7 @@
     import { mmToString, mmddyyyy } from "@/utils";
 
     export let loginRecord: LoginRecord;
+    export let more: boolean;
 
     const actualDate = new Date(loginRecord.date);
     const date = mmddyyyy(actualDate);
@@ -14,5 +15,8 @@
     <Table.Cell class="font-medium">{loginRecord.service}</Table.Cell>
     <Table.Cell>{mmToString(date[0])} {date[1]}, {date[2]}</Table.Cell>
     <Table.Cell>{loginRecord.deviceType}</Table.Cell>
+    {#if more}
+        <Table.Cell>{loginRecord.passkeyUsed ? loginRecord.passkeyUsed : "None Used"}</Table.Cell>
+    {/if}
     <Table.Cell class="text-right">{actualDate.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'})}</Table.Cell>
 </Table.Row>

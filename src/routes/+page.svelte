@@ -61,6 +61,7 @@
         // Show UI appropriate for the `verified` status
         if (verificationJSON && verificationJSON.verified) {
             toast.success("MFA Success", { description: "You're logged in." });
+            $loginOrRegisterDiologOpen = false;
             await invalidateAll();
             goto('/dashboard');
         } else {
@@ -80,10 +81,12 @@
                     startAuthenticationButton();
                 } else {
                     toast.success("Success", {description: form.message});
+                    $loginOrRegisterDiologOpen = false;
                 }
 
                 if (form.message === "Logged in user!") {
                     goto('/dashboard');
+                    $loginOrRegisterDiologOpen = false;
                 }
             }
         }

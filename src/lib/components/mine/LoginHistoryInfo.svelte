@@ -44,7 +44,7 @@
                     <p><span class="font-bold">Service</span>: {info.service}</p>
                     <p><span class="font-bold">Time</span>: {actualDate.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'})}</p>
                     <p><span class="font-bold">Date</span>: {mmToString(date[0])} {date[1]}, {date[2]}</p>
-                    <p><span class="font-bold">2FA</span>: {info.passkeyUsed}</p>
+                    <p><span class="font-bold">MFA</span>: {info.passkeyUsed}</p>
                 </div>
             </div>
         {/if}
