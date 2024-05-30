@@ -7,8 +7,8 @@
     import { Input } from "$lib/components/ui/input/index.js";
     import * as Card from "$lib/components/ui/card/index.js";
     import CalendarIcon from "svelte-radix/Calendar.svelte";
-    import { cn } from "$lib/utils.js";
     import type { LoginRecord } from "@/addLogin.js";
+    import { cn } from "$lib/utils.js";
 
     const df = new DateFormatter("en-US", {
         dateStyle: "long"

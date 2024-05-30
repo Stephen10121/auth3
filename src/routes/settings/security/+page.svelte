@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Fingerprint, Key, KeyRound, LockKeyhole, ScanFace } from 'lucide-svelte';
+    import { Fingerprint, Key, KeyRound, Keyboard, LockKeyhole, Nfc, ScanFace } from 'lucide-svelte';
     import { Button, buttonVariants } from "$lib/components/ui/button/index.js";
     import SecurityKeys from '@/components/mine/SecurityKeys.svelte';
     import * as Select from "$lib/components/ui/select/index.js";
@@ -195,6 +195,14 @@
                                         <Select.Item on:click={() => {newKeyIcon="face"}} value='face' label="Face">
                                             <ScanFace class="mr-2 size-4" aria-hidden="true" />
                                             Face
+                                        </Select.Item>
+                                        <Select.Item on:click={() => {newKeyIcon="nfc"}} value='nfc' label="NFC">
+                                            <Nfc class="mr-2 size-4" aria-hidden="true" />
+                                            NFC
+                                        </Select.Item>
+                                        <Select.Item on:click={() => {newKeyIcon="pin"}} value='pin' label="Pin">
+                                            <Keyboard class="mr-2 size-4" aria-hidden="true" />
+                                            Pin
                                         </Select.Item>
                                     </Select.Group>
                                 </Select.Content>

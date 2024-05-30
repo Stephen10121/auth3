@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { PublicPasskey } from "@/utils";
     import * as Avatar from "$lib/components/ui/avatar/index.js";
-    import { Fingerprint, Key, KeyRound, LockKeyhole, ScanFace } from 'lucide-svelte';
+    import { Fingerprint, Key, KeyRound, Keyboard, LockKeyhole, Nfc, ScanFace } from 'lucide-svelte';
     import { Button } from "$lib/components/ui/button/index.js";
     import * as AlertDialog from "$lib/components/ui/alert-dialog/index.js";
     import { toast } from "svelte-sonner";
@@ -44,6 +44,10 @@
                         <Key class="mx-auto my-auto size-5" aria-hidden="true" />
                     {:else if key.icon === "lock"}
                         <LockKeyhole class="mx-auto my-auto size-5" aria-hidden="true" />
+                    {:else if key.icon === "nfc"}
+                        <Nfc class="mx-auto my-auto size-5" aria-hidden="true" />
+                    {:else if key.icon === "pin"}
+                        <Keyboard class="mx-auto my-auto size-5" aria-hidden="true" />
                     {:else}
                         <KeyRound class="mx-auto my-auto size-5" aria-hidden="true" />
                     {/if}
