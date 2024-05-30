@@ -1,38 +1,15 @@
-# create-svelte
+> [!WARNING]
+> Still in the development phase. Breaking changes can occur.
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+# GAuth
+Technically, I built this for myself, so I wouldn't need to have users register different accounts across all of my products. Then I realised the potential this has for other projects as well, so I decided to make it public for other services.
 
-## Creating a project
+## Special Thanks
+Special thanks to [Huntabyte](https://github.com/huntabyte/) for his [Youtube Series](https://youtube.com/playlist?list=PLq30BP0TIcqW3sMm404UIEA7osPEkKAyg&si=sbhAClj-gTSB90gb) about setting SvelteKit up with Pocketbase. This really helped me with most of the basic features like password reset, email change, username change and basic login.
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## Features
+Obviously it has all the normal features of a login system.
+- [x] Password Reset
+- [x] Username Change
+- [x] Multi-Factor Authentication
+- [x] Name Change
