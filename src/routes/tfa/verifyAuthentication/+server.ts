@@ -10,15 +10,39 @@ export async function POST({ locals, request }) {
     const user = await locals.pb.collection("users").getOne(locals.user.id);
     const currentOptions = user.current_authentication_options;
 
-    const passkey = await locals.pb.collection("passkeys").getFirstListItem(`id="${body.id}"`, {
-        filter: `webauthn_user_id="${user.id}"`
-    });
+    let passkey;
+    try {
+        passkey = await locals.pb.collection("passkeys").getFirstListItem(`internal_user_id="${user.id}" && cred_id="${body.id}"`);
+    } catch (err) {
+        console.error(err);
+        return error(404, `Could not find passkey ${body.id} for user ${user.id}`);
+    }
 
     if (!passkey) {
         return error(404, `Could not find passkey ${body.id} for user ${user.id}`);
     }
 
+    let credPublicKey: Uint8Array;
+    try {
+        credPublicKey = Uint8Array.from(Object.keys(passkey.cred_public_key).map((key) => passkey.cred_public_key[key]));
+    } catch (err) {
+        console.log(err);
+        return error(500);
+    }
+
     let verification;
+    console.log({
+        response: body,
+        expectedChallenge: currentOptions.challenge,
+        expectedOrigin: origin,
+        expectedRPID: rpID,
+        authenticator: {
+            credentialID: passkey.cred_id,
+            credentialPublicKey: credPublicKey,
+            counter: passkey.counter,
+            transports: passkey.transports,
+        }
+    });
     try {
         verification = await verifyAuthenticationResponse({
             response: body,
@@ -26,8 +50,8 @@ export async function POST({ locals, request }) {
             expectedOrigin: origin,
             expectedRPID: rpID,
             authenticator: {
-                credentialID: passkey.id,
-                credentialPublicKey: passkey.cred_public_key,
+                credentialID: passkey.cred_id,
+                credentialPublicKey: credPublicKey,
                 counter: passkey.counter,
                 transports: passkey.transports,
             }

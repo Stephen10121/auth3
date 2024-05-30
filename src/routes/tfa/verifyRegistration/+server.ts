@@ -37,16 +37,18 @@ export async function POST({ locals, request }) {
                 credentialDeviceType,
                 credentialBackedUp
             } = registrationInfo;
+
+            console.log({registrationInfo});
     
             const newPasskey: Passkey = {
-                // A unique identifier for the credential
-                cred_id: credentialID,
-                // The public key bytes, used for subsequent authentication signature verification
-                cred_public_key: credentialPublicKey,
                 // `user` here is from Step 2
                 internal_user_id: user.id,
                 // Created by `generateRegistrationOptions()` in Step 1
                 webauthn_user_id: currentOptions.user.id,
+                // A unique identifier for the credential
+                cred_id: credentialID,
+                // The public key bytes, used for subsequent authentication signature verification
+                cred_public_key: credentialPublicKey,
                 // The number of times the authenticator has been used on this site so far
                 counter,
                 // Whether the passkey is single-device or multi-device
@@ -60,8 +62,7 @@ export async function POST({ locals, request }) {
             // (Pseudocode) Save the authenticator info so that we can
             // get it by user ID later
             try {
-                const record = await locals.pb.collection('passkeys').create(newPasskey);
-                console.log(record);
+                await locals.pb.collection('passkeys').create(newPasskey);
             } catch (err) {
                 console.log({err});
 

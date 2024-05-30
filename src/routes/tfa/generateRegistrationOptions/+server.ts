@@ -20,7 +20,7 @@ export async function GET({ locals }) {
             attestationType: 'none',
             // Prevent users from re-registering existing authenticators
             excludeCredentials: passkeys.map(passkey => ({
-                id: passkey.id,
+                id: passkey.cred_id,
                 // Optional
                 transports: passkey.transports,
             })),
@@ -28,15 +28,15 @@ export async function GET({ locals }) {
             authenticatorSelection: {
                 // Defaults
                 residentKey: 'preferred',
-                userVerification: 'preferred',
+                userVerification: "preferred",
                 // Optional
-                authenticatorAttachment: 'platform',
+                // authenticatorAttachment: 'platform',
             },
         });
 
         await locals.pb.collection('users').update(locals.user.id, { ...locals.user, current_registration_options: options });
 
-        return json({ options });
+        return json(options);
     } catch (err) {
         console.log(err);
 

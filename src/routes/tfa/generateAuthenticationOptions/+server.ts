@@ -16,15 +16,15 @@ export async function GET({ locals }) {
             rpID,
             // Require users to use a previously-registered authenticator
             allowCredentials: passkeys.map(passkey => ({
-                id: passkey.id,
+                id: passkey.cred_id,
                 transports: passkey.transports,
-            })),
+            }))
         });
 
         // (Pseudocode) Remember this challenge for this user
         await locals.pb.collection('users').update(locals.user.id, { ...locals.user, current_authentication_options: options });
 
-        return json({ options });
+        return json(options);
     } catch (err) {
         console.log(err);
 
