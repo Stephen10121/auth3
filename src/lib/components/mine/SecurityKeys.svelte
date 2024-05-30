@@ -32,46 +32,46 @@
 </script>
 
 <div class="space-y-8">
-    {#each publicKeys as key (key.id)}
-        <div class="flex items-center">
-            <Avatar.Root class="h-9 w-9">
-                {#if key.icon === "fingerprint"}
-                    <Fingerprint class="mx-auto my-auto size-5" aria-hidden="true" />
-                {:else if key.icon === "face"}
-                    <ScanFace class="mx-auto my-auto size-5" aria-hidden="true" />
-                {:else if key.icon === "key"}
-                    <Key class="mx-auto my-auto size-5" aria-hidden="true" />
-                {:else if key.icon === "lock"}
-                    <LockKeyhole class="mx-auto my-auto size-5" aria-hidden="true" />
-                {:else}
-                    <KeyRound class="mx-auto my-auto size-5" aria-hidden="true" />
-                {/if}
-                <!-- <Avatar.Image src="/avatars/01.png" alt="Avatar" />
-                <Avatar.Fallback>OM</Avatar.Fallback> -->
-            </Avatar.Root>
-            <div class="ml-4 space-y-1">
-                <p class="text-sm font-medium leading-none">{key.name}</p>
-                <p class="text-sm text-muted-foreground">Used {key.usage} time{key.usage === 1 ? "" : "s"}.</p>
+    {#if publicKeys.length > 0}
+        {#each publicKeys as key (key.id)}
+            <div class="flex items-center">
+                <Avatar.Root class="h-9 w-9">
+                    {#if key.icon === "fingerprint"}
+                        <Fingerprint class="mx-auto my-auto size-5" aria-hidden="true" />
+                    {:else if key.icon === "face"}
+                        <ScanFace class="mx-auto my-auto size-5" aria-hidden="true" />
+                    {:else if key.icon === "key"}
+                        <Key class="mx-auto my-auto size-5" aria-hidden="true" />
+                    {:else if key.icon === "lock"}
+                        <LockKeyhole class="mx-auto my-auto size-5" aria-hidden="true" />
+                    {:else}
+                        <KeyRound class="mx-auto my-auto size-5" aria-hidden="true" />
+                    {/if}
+                </Avatar.Root>
+                <div class="ml-4 space-y-1">
+                    <p class="text-sm font-medium leading-none">{key.name}</p>
+                    <p class="text-sm text-muted-foreground">Used {key.usage} time{key.usage === 1 ? "" : "s"}.</p>
+                </div>
+                <AlertDialog.Root>
+                    <AlertDialog.Trigger asChild let:builder>
+                        <Button builders={[builder]} class="ml-auto font-medium" variant="destructive">Delete</Button>
+                    </AlertDialog.Trigger>
+                    <AlertDialog.Content>
+                        <AlertDialog.Header>
+                            <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
+                            <AlertDialog.Description>
+                                This action cannot be undone. This will permanently delete "{key.name}"
+                                and you wont be able to use it to login to your account.
+                            </AlertDialog.Description>
+                        </AlertDialog.Header>
+                        <AlertDialog.Footer>
+                            <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+                            <AlertDialog.Action on:click={() => deleteKey(key.id, key.name)}>Continue</AlertDialog.Action>
+                        </AlertDialog.Footer>
+                    </AlertDialog.Content>
+                </AlertDialog.Root>
+                <!-- <Button class="ml-auto font-medium">Delete</Button> -->
             </div>
-            <AlertDialog.Root>
-                <AlertDialog.Trigger asChild let:builder>
-                    <Button builders={[builder]} class="ml-auto font-medium" variant="destructive">Delete</Button>
-                </AlertDialog.Trigger>
-                <AlertDialog.Content>
-                    <AlertDialog.Header>
-                        <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
-                        <AlertDialog.Description>
-                            This action cannot be undone. This will permanently delete "{key.name}"
-                            and you wont be able to use it to login to your account.
-                        </AlertDialog.Description>
-                    </AlertDialog.Header>
-                    <AlertDialog.Footer>
-                        <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-                        <AlertDialog.Action on:click={() => deleteKey(key.id, key.name)}>Continue</AlertDialog.Action>
-                    </AlertDialog.Footer>
-                </AlertDialog.Content>
-            </AlertDialog.Root>
-            <!-- <Button class="ml-auto font-medium">Delete</Button> -->
-        </div>
-    {/each}
+        {/each}
+    {/if}
 </div>
