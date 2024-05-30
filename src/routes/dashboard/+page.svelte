@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Activity from "lucide-svelte/icons/activity";
-	import CreditCard from "lucide-svelte/icons/credit-card";
 	import OpenDoor from "lucide-svelte/icons/door-open";
 	import Download from "lucide-svelte/icons/download";
 	import Users from "lucide-svelte/icons/users";
@@ -9,6 +8,8 @@
 	import * as Tabs from "$lib/components/ui/tabs/index.js";
     import LoginHistory from "@/components/mine/LoginHistory.svelte";
     import { mmddyyyy } from "@/utils.js";
+    import { KeyRound } from "lucide-svelte";
+    import MostUsedPasskey from "@/components/mine/MostUsedPasskey.svelte";
 
 	export let data;
 </script>
@@ -57,18 +58,7 @@
 							<p class="text-xs text-muted-foreground">+180.1% from last month</p>
 						</Card.Content>
 					</Card.Root>
-					<Card.Root>
-						<Card.Header
-							class="flex flex-row items-center justify-between space-y-0 pb-2"
-						>
-							<Card.Title class="text-sm font-medium">Sales</Card.Title>
-							<CreditCard class="h-4 w-4 text-muted-foreground" />
-						</Card.Header>
-						<Card.Content>
-							<div class="text-2xl font-bold">+12,234</div>
-							<p class="text-xs text-muted-foreground">+19% from last month</p>
-						</Card.Content>
-					</Card.Root>
+					<MostUsedPasskey passkeys={data.publicPasskeys} />
 					<Card.Root>
 						<Card.Header
 							class="flex flex-row items-center justify-between space-y-0 pb-2"
