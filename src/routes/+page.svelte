@@ -18,8 +18,10 @@
     export let form;
 
     let tfaMode = false;
+    let tfaSomethingWentWrong = false;
 
     async function startAuthenticationButton() {
+        tfaMode = true;
         // GET authentication options from the endpoint that calls
         // @simplewebauthn/server -> generateAuthenticationOptions()
         const resp = await fetch('/tfa/generateAuthenticationOptions', {
@@ -29,8 +31,7 @@
             },
             body: JSON.stringify({ username: form?.tfa?.username, password: form?.tfa?.password }),
         });
-        const respJSON = await resp.json()
-        console.log(respJSON);
+        const respJSON = await resp.json();
 
         let asseResp;
         try {
@@ -40,6 +41,7 @@
             console.error(error);
             // Some basic error handling
             toast.error("2FA Error", { description: "Oh no, something went wrong! Check console." });
+            tfaSomethingWentWrong = true;
             throw error;
         }
 
@@ -63,6 +65,7 @@
             goto('/dashboard');
         } else {
             console.error(verificationJSON);
+            tfaSomethingWentWrong = true;
             toast.error("2FA Error", { description: "Oh no, something went wrong! Check console." });
         }
     }
@@ -75,7 +78,6 @@
                 if (form.tfa) {
                     toast.info("You have 2FA Enabled");
                     startAuthenticationButton();
-                    tfaMode = true;
                 } else {
                     toast.success("Success", {description: form.message});
                 }
@@ -113,7 +115,7 @@
             </Tabs.List>
             <Tabs.Content value="login">
                 {#if tfaMode}
-                    <TfaMode />
+                    <TfaMode bind:tfaMode={tfaMode} bind:tfaSomethingWentWrong={tfaSomethingWentWrong} restartTfa={startAuthenticationButton} />
                 {:else}
                     <Card.Root>
                         <Card.Header>
