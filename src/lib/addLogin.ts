@@ -10,10 +10,11 @@ export type LoginRecord = {
         complete_device_name: string,
         form_factor: string,
         is_mobile: boolean
-    }
+    },
+    passkeyUsed?: string
 }
 
-export async function addLogin({record, locals, ip, service, deviceType, userAgent, deviceInfo}: {record: RecordModel, locals: App.Locals, ip: string, service: string, deviceType: string, userAgent: string, deviceInfo: LoginRecord["deviceInfo"]}) {
+export async function addLogin({record, locals, ip, service, deviceType, userAgent, deviceInfo, passkeyUsed}: {record: RecordModel, locals: App.Locals, ip: string, service: string, deviceType: string, userAgent: string, deviceInfo: LoginRecord["deviceInfo"], passkeyUsed?: string}) {
     let logins = record.logins === null ? [] : record.logins as LoginRecord[];
     logins.push({
         date: new Date(),
@@ -21,7 +22,8 @@ export async function addLogin({record, locals, ip, service, deviceType, userAge
         service,
         deviceType,
         userAgent,
-        deviceInfo
+        deviceInfo,
+        passkeyUsed
     });
 
     try {

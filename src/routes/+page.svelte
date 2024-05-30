@@ -10,17 +10,75 @@
     import { loginOrRegisterDiologOpen, loginSignupValue } from "@/store";
     import { toast } from "svelte-sonner";
     import { enhance } from '$app/forms';
-    import { goto } from "$app/navigation";
+    import { goto, invalidateAll } from "$app/navigation";
     import { onMount } from "svelte";
+    import TfaMode from "@/components/mine/TFAMode.svelte";
+    import { startAuthentication } from "@simplewebauthn/browser";
 
     export let form;
+
+    let tfaMode = false;
+
+    async function startAuthenticationButton() {
+        // GET authentication options from the endpoint that calls
+        // @simplewebauthn/server -> generateAuthenticationOptions()
+        const resp = await fetch('/tfa/generateAuthenticationOptions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username: form?.tfa?.username, password: form?.tfa?.password }),
+        });
+        const respJSON = await resp.json()
+        console.log(respJSON);
+
+        let asseResp;
+        try {
+            // Pass the options to the authenticator and wait for a response
+            asseResp = await startAuthentication(respJSON);
+        } catch (error) {
+            console.error(error);
+            // Some basic error handling
+            toast.error("2FA Error", { description: "Oh no, something went wrong! Check console." });
+            throw error;
+        }
+
+        // POST the response to the endpoint that calls
+        // @simplewebauthn/server -> verifyAuthenticationResponse()
+        const verificationResp = await fetch('/tfa/verifyAuthentication', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ...asseResp, username: form?.tfa?.username, password: form?.tfa?.password, wurfl: form?.tfa?.wurfl }),
+        });
+
+        // Wait for the results of verification
+        const verificationJSON = await verificationResp.json();
+
+        // Show UI appropriate for the `verified` status
+        if (verificationJSON && verificationJSON.verified) {
+            toast.success("2FA Success");
+            await invalidateAll();
+            goto('/dashboard');
+        } else {
+            console.error(verificationJSON);
+            toast.error("2FA Error", { description: "Oh no, something went wrong! Check console." });
+        }
+    }
 
     $: {
         if (form) {
             if (form.error) {
                 toast.error("Form Error", { description: form.message});
             } else if (form.success) {
-                toast.success("Success", {description: form.message});
+                if (form.tfa) {
+                    toast.info("You have 2FA Enabled");
+                    startAuthenticationButton();
+                    tfaMode = true;
+                } else {
+                    toast.success("Success", {description: form.message});
+                }
 
                 if (form.message === "Logged in user!") {
                     goto('/dashboard');
@@ -50,37 +108,42 @@
     <Dialog.Content class="sm:max-w-[425px] pt-10">
         <Tabs.Root value={$loginSignupValue}>
             <Tabs.List class="grid w-full grid-cols-2">
-                <Tabs.Trigger value="login">Login</Tabs.Trigger>
-                <Tabs.Trigger value="register">Register</Tabs.Trigger>
+                <Tabs.Trigger value="login" disabled={tfaMode}>Login</Tabs.Trigger>
+                <Tabs.Trigger value="register" disabled={tfaMode}>Register</Tabs.Trigger>
             </Tabs.List>
             <Tabs.Content value="login">
-                <Card.Root>
-                    <Card.Header>
-                        <Card.Title>Login</Card.Title>
-                        <Card.Description>Welcome back! 😊</Card.Description>
-                    </Card.Header>
-                    <form action="?/login" method="POST" use:enhance={() => {
-                        return async ({ update }) => {
-                          update({ reset: false });
-                        };
-                      }}>
-                      <input type="hidden" name="wurfl" bind:value={wurfl}>
-                        <Card.Content class="space-y-2">
-                            <div class="space-y-1">
-                                <Label for="username">Username</Label>
-                                <Input id="username" name="username" />
-                            </div>
-                            <div class="space-y-1">
-                                <Label for="password">Password</Label>
-                                <Input id="password" name="password" type="password" />
-                            </div>
-                            <a href="/reset-password" class="underline mt-5 block">I forgot my password</a>
-                        </Card.Content>
-                        <Card.Footer>
-                            <Button type="submit">Login</Button>
-                        </Card.Footer>
-                    </form>
-                </Card.Root>
+                {#if tfaMode}
+                    <TfaMode />
+                {:else}
+                    <Card.Root>
+                        <Card.Header>
+                            <Card.Title>Login</Card.Title>
+                            <Card.Description>Welcome back! 😊</Card.Description>
+                        </Card.Header>
+                        <form action="?/login" method="POST" use:enhance={() => {
+                            return async ({ update }) => {
+                                // tfaMode = true;
+                                update({ reset: false });
+                            };
+                        }}>
+                            <input type="hidden" name="wurfl" bind:value={wurfl} />
+                            <Card.Content class="space-y-2">
+                                <div class="space-y-1">
+                                    <Label for="username">Username</Label>
+                                    <Input id="username" name="username" />
+                                </div>
+                                <div class="space-y-1">
+                                    <Label for="password">Password</Label>
+                                    <Input id="password" name="password" type="password" />
+                                </div>
+                                <a href="/reset-password" class="underline mt-5 block">I forgot my password</a>
+                            </Card.Content>
+                            <Card.Footer>
+                                <Button type="submit">Login</Button>
+                            </Card.Footer>
+                        </form>
+                    </Card.Root>
+                {/if}
             </Tabs.Content>
             <Tabs.Content value="register">
                 <Card.Root>

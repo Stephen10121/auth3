@@ -28,7 +28,7 @@ export const actions = {
 
         return { error: false, success: true, message: "User was created! Check for verification email." }
     },
-    login: async({ request, locals, getClientAddress }): Promise<({error: false, success: boolean, message: string} | {error: true, message: string})> => {
+    login: async({ request, locals, getClientAddress }): Promise<({error: false, success: boolean, message: string, tfa?: { username: FormDataEntryValue, password: FormDataEntryValue, wurfl: FormDataEntryValue }} | {error: true, message: string})> => {
         const body = Object.fromEntries(await request.formData());
 
         if (!body.username || !body.password) {
@@ -39,6 +39,16 @@ export const actions = {
 
         try {
             user = await locals.pb.collection("users").authWithPassword(body.username as string, body.password as string);
+            if (user.record.tfa) {
+                const passkeys = await locals.pb.collection("passkeys").getFullList({
+                    filter: `internal_user_id="${user.record.id}"`
+                });
+                if (passkeys.length !== 0) {
+                    locals.pb.authStore.clear();
+                    locals.user = undefined;
+                    return { error: false, success: true, tfa: { username: body.username, password: body.password, wurfl: body.wurfl }, message: "" }
+                }
+            }
         } catch (err) {
             let error = err as any as ClientResponseError;
             let errorList = Object.keys(error.response.data);
@@ -76,7 +86,7 @@ export const actions = {
             service: "GAuth",
             deviceType: deviceInfo.complete_device_name,
             userAgent: userAgent ? userAgent : "None Detected",
-            deviceInfo
+            deviceInfo,
         });
 
         return { error: false, success: true, message: "Logged in user!" }
