@@ -1,7 +1,6 @@
 <script lang="ts">
-    import { Button } from "$lib/components/ui/button";
     import * as Card from "$lib/components/ui/card/index.js";
-    import { toast } from "svelte-sonner";
+    import { Button } from "$lib/components/ui/button";
     import Loading from "./Loading.svelte";
 
     export let tfaMode: boolean;
@@ -11,8 +10,8 @@
 
 <Card.Root>
     <Card.Header>
-        <Card.Title>2 Factor Authentication</Card.Title>
-        <Card.Description>You have 2 factor authentication enabled.</Card.Description>
+        <Card.Title>Multi Factor Authentication</Card.Title>
+        <Card.Description>You have multi factor authentication enabled.</Card.Description>
     </Card.Header>
     <div>
         <Card.Content class="space-y-2">

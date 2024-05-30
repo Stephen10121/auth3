@@ -40,7 +40,7 @@
         } catch (error) {
             console.error(error);
             // Some basic error handling
-            toast.error("2FA Error", { description: "Oh no, something went wrong! Check console." });
+            toast.error("MFA Error", { description: "Oh no, something went wrong! Please try again!" });
             tfaSomethingWentWrong = true;
             throw error;
         }
@@ -60,13 +60,13 @@
 
         // Show UI appropriate for the `verified` status
         if (verificationJSON && verificationJSON.verified) {
-            toast.success("2FA Success");
+            toast.success("MFA Success", { description: "You're logged in." });
             await invalidateAll();
             goto('/dashboard');
         } else {
             console.error(verificationJSON);
             tfaSomethingWentWrong = true;
-            toast.error("2FA Error", { description: "Oh no, something went wrong! Check console." });
+            toast.error("MFA Error", { description: "Oh no, something went wrong! Please try again!" });
         }
     }
 
@@ -76,7 +76,7 @@
                 toast.error("Form Error", { description: form.message});
             } else if (form.success) {
                 if (form.tfa) {
-                    toast.info("You have 2FA Enabled");
+                    toast.info("You have MFA Enabled");
                     startAuthenticationButton();
                 } else {
                     toast.success("Success", {description: form.message});

@@ -1,19 +1,16 @@
 <script lang="ts">
-    import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
-    import { toast } from 'svelte-sonner';
-    import {
-    Button,
-    buttonVariants
-  } from "$lib/components/ui/button/index.js";
-  import * as Dialog from "$lib/components/ui/dialog/index.js";
-  import { Input } from "$lib/components/ui/input/index.js";
-  import { Label } from "$lib/components/ui/label/index.js";
-  import * as Select from "$lib/components/ui/select/index.js";
     import { Fingerprint, Key, KeyRound, LockKeyhole, ScanFace } from 'lucide-svelte';
-    import { invalidateAll } from '$app/navigation';
-    import * as Card from "$lib/components/ui/card/index.js";
+    import { Button, buttonVariants } from "$lib/components/ui/button/index.js";
     import SecurityKeys from '@/components/mine/SecurityKeys.svelte';
+    import * as Select from "$lib/components/ui/select/index.js";
+    import * as Dialog from "$lib/components/ui/dialog/index.js";
+    import { startRegistration } from '@simplewebauthn/browser';
     import { Switch } from "$lib/components/ui/switch/index.js";
+    import { Input } from "$lib/components/ui/input/index.js";
+    import { Label } from "$lib/components/ui/label/index.js";
+    import * as Card from "$lib/components/ui/card/index.js";
+    import { invalidateAll } from '$app/navigation';
+    import { toast } from 'svelte-sonner';
     import { enhance } from '$app/forms';
 
     export let data;
@@ -83,9 +80,9 @@
 
         const verificationJSON = await verificationResp.json();
         if (verificationJSON && verificationJSON.ok) {
-            toast.success("Success", {description: `2FA was ${enable ? "Enabled" : "Disabled"}!` });
+            toast.success("Success", {description: `MFA was ${enable ? "Enabled" : "Disabled"}!` });
         } else {
-            toast.error("Error", { description: "Couldn't change 2FA status. Try reloading the page." });
+            toast.error("Error", { description: "Couldn't change MFA status. Try reloading the page." });
             console.error(verificationJSON);
         }
         invalidateAll();
@@ -143,22 +140,23 @@
                         </form>
                     </Dialog.Content>
             </Dialog.Root>
-            <h4 class="scroll-m-20 text-xl font-semibold tracking-tight mt-7">2 Factor Authentication</h4>
+            <h4 class="scroll-m-20 text-xl font-semibold tracking-tight mt-7">MFA - Multi Factor Authentication</h4>
+            <p class="leading-6 text-sm mt-3">If you enable this and you didn't register any keys, when you login, MFA will still be disabled because you don't have any MFA passkeys registered.</p>
             <div class="flex items-center space-x-2 mt-5">
                 <Switch bind:checked={tfaEnabled} id="tfa-enabled" />
-                <Label for="tfa-enabled">Enable 2FA</Label>
+                <Label for="tfa-enabled" class="relative w-fit">Enable MFA</Label>
             </div>
             <Card.Root class="col-span-3 mt-5 {tfaEnabled ? "" : "opacity-50 pointer-events-none"}">
                 <Card.Header>
                     <Card.Title>Passkeys</Card.Title>
-                    <Card.Description>Your 2 factor authentication keys.</Card.Description>
+                    <Card.Description>Your multi factor authentication keys.</Card.Description>
                 </Card.Header>
                 <Card.Content>
                     <SecurityKeys publicKeys={data.publicPasskeys} {tfaEnabled} />
                 </Card.Content>
             </Card.Root>
             <Dialog.Root bind:open={registerDialogOpen}>
-                <Dialog.Trigger class="{buttonVariants({ variant: 'default' })} mt-5" disabled={!tfaEnabled}>Register a new 2FA key!</Dialog.Trigger>
+                <Dialog.Trigger class="{buttonVariants({ variant: 'default' })} mt-5" disabled={!tfaEnabled}>Register a new MFA key!</Dialog.Trigger>
                 <Dialog.Content class="sm:max-w-[425px]">
                     <Dialog.Header>
                         <Dialog.Title>New Passkey</Dialog.Title>
