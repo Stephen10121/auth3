@@ -16,6 +16,7 @@ export const actions = {
 
         try {
             await locals.pb.collection('users').create({ emailVisibility: true, ...body });
+            await locals.pb.collection('users').requestVerification(body.email as string);
         } catch (err) {
             let error = err as any as ClientResponseError;
             let errorList = Object.keys(error.response.data);
@@ -25,7 +26,7 @@ export const actions = {
             return { error: true, message: error.response.data[errorList[0]].message }
         }
 
-        return { error: false, success: true, message: "User was created!" }
+        return { error: false, success: true, message: "User was created! Check for verification email." }
     },
     login: async({ request, locals, getClientAddress }): Promise<({error: false, success: boolean, message: string} | {error: true, message: string})> => {
         const body = Object.fromEntries(await request.formData());

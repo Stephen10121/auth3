@@ -1,5 +1,3 @@
-import { rpID, origin } from '@/tfa/types';
-import { verifyAuthenticationResponse } from '@simplewebauthn/server';
 import { error, json } from '@sveltejs/kit';
 
 export async function POST({ locals, request }) {

@@ -20,7 +20,7 @@
     let newKeyName = "";
     let newKeyIcon = "";
     let registerDialogOpen = false;
-    let tfaEnabled = false;
+    let tfaEnabled = data.user?.tfa;
 
     async function registerButtonClick() {
         if (newKeyIcon.length === 0 || newKeyIcon.length === 0) {
@@ -109,6 +109,31 @@
         } else {
             console.error(verificationJSON);
             toast.error("2FA Error", { description: "Oh no, something went wrong! Check console." });
+        }
+    }
+
+    async function tfaChange(enable: boolean) {
+        const verificationResp = await fetch('/tfa/setTfa', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ enable: enable ? "1" : "0" }),
+        });
+
+        const verificationJSON = await verificationResp.json();
+        if (verificationJSON && verificationJSON.ok) {
+            toast.success("Success", {description: `2FA was ${enable ? "Enabled" : "Disabled"}!` });
+        } else {
+            toast.error("Error", { description: "Couldn't change 2FA status. Try reloading the page." });
+            console.error(verificationJSON);
+        }
+        invalidateAll();
+    }
+
+    $: {
+        if (tfaEnabled !== data.user?.tfa) {
+            tfaChange(tfaEnabled);
         }
     }
 </script>
