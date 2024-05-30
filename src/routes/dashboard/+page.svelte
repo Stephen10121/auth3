@@ -10,6 +10,7 @@
     import { mmddyyyy } from "@/utils.js";
     import { KeyRound } from "lucide-svelte";
     import MostUsedPasskey from "@/components/mine/MostUsedPasskey.svelte";
+    import TotalLoginsCard from "@/components/mine/TotalLoginsCard.svelte";
 
 	export let data;
 </script>
@@ -34,18 +35,7 @@
 			</Tabs.List>
 			<Tabs.Content value="overview" class="space-y-4">
 				<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-					<Card.Root>
-						<Card.Header
-							class="flex flex-row items-center justify-between space-y-0 pb-2"
-						>
-							<Card.Title class="text-sm font-medium">Total Logins</Card.Title>
-							<OpenDoor class="h-4 w-4 text-muted-foreground" />
-						</Card.Header>
-						<Card.Content>
-							<div class="text-2xl font-bold">{data.user.logins ? data.user.logins.length : "0"}</div>
-							<p class="text-xs text-muted-foreground">First login on {data.user.logins ? mmddyyyy(data.user.logins[data.user.logins.length-1].date).join('/') : "unkown"}.</p>
-						</Card.Content>
-					</Card.Root>
+					<TotalLoginsCard logins={data.user.logins} />
 					<Card.Root>
 						<Card.Header
 							class="flex flex-row items-center justify-between space-y-0 pb-2"
