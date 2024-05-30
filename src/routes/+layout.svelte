@@ -108,11 +108,15 @@
                         </a>
                     </DropdownMenu.Group>
                     <DropdownMenu.Separator />
-                    <a href="https://github.com/Stephen10121/auth3" target="_blank">
+                    <a href="https://github.com/Stephen10121" target="_blank">
                         <DropdownMenu.Item>GitHub</DropdownMenu.Item>
                     </a>
-                    <DropdownMenu.Item>Support</DropdownMenu.Item>
-                    <DropdownMenu.Item>API</DropdownMenu.Item>
+                    <a href="https://buymeacoffee.com/stephen10121" target="_blank">
+                        <DropdownMenu.Item>Support</DropdownMenu.Item>
+                    </a>
+                    <a href="https://github.com/Stephen10121/auth3" target="_blank">
+                        <DropdownMenu.Item>API</DropdownMenu.Item>
+                    </a>
                     <DropdownMenu.Separator />
                     <DropdownMenu.Sub>
                         <DropdownMenu.SubTrigger>Theme</DropdownMenu.SubTrigger>
