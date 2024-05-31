@@ -5,19 +5,11 @@
 
 	export let passkeys: PublicPasskey[];
 
-    let mostUsed = {
-        name: "None Used",
-        usage: 0
-    }
+    let mostUsed = { name: "None Used", usage: 0 }
 
     $: {
         for (let i=0;i<passkeys.length;i++) {
-            if (passkeys[i].usage >= mostUsed.usage) {
-                mostUsed = {
-                    name: passkeys[i].name,
-                    usage: passkeys[i].usage
-                }
-            }
+            if (passkeys[i].usage >= mostUsed.usage) mostUsed = passkeys[i];
         }
     }
 </script>
