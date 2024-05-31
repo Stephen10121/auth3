@@ -28,7 +28,7 @@
                     <Shield class="mr-2 size-4" aria-hidden="true" />
                     Security
                 </Button>
-                <Button href="/settings/developer" variant={$page.url.pathname === "/settings/developer" ? "secondary" : "ghost"} size="sm" class="justify-start">
+                <Button href="/settings/developer" variant={$page.url.pathname.includes("/settings/developer") ? "secondary" : "ghost"} size="sm" class="justify-start">
                     <Code class="mr-2 size-4" aria-hidden="true" />
                     Developer
                 </Button>

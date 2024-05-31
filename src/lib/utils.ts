@@ -89,3 +89,11 @@ export type PublicPasskey = {
 	icon: string
 	usage: number
 }
+
+export type PublicAuthClient = {
+	id: string,
+	owner: string,
+	authorized_origins: string[],
+	authorized_redirects: string[],
+	name: string
+}
